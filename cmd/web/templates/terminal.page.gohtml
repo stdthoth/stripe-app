@@ -1,0 +1,71 @@
+{{template "base"}}
+
+{{define "title"}}
+    Credit card POS
+{{end}}
+
+{{define "content"}}
+<h2 class="mt-3 text-center">Point of Sales</h2>
+<hr>
+<div class= "alert alert-danger text-center d-none" id="card-messages"></div>
+
+<form action="/payement-succeeded" 
+method="post" name="charge_form" 
+id="charge_form" class="d-block needs-validation charge-form" 
+autocomple="off" novalidate="">
+    <div class="mb-3">
+        <label for="charge_amount" class="form-label">Amount</label>
+        <input class="text" class="form-control" id="charge_amount"
+            required="" autocomplete="charge_amount-new">
+    </div>
+
+    <div class="mb-3">
+        <label for="cardholder-name" class="form-label">Cardholder Name</label>
+        <input class="text" class="form-control" id="cardholder-name" name="cardholder_name"
+            required="" autocomplete="cardholder-name-new">
+    </div>
+
+    <div class="mb-3">
+        <label for="cardholder-email" class="form-label">Cardholder E-mail</label>
+        <input class="text" class="form-control" id="cardholder-email" name="email"
+            required="" autocomplete="cardholder-email-new">
+    </div>
+
+    <div class="mb-3">
+        <label for="card-element" class="form-label">Credit Card</label>
+        <div id="card-element" class="form-control"></div>
+        <div  class="alert-danger text-center" id="card-errors" role="alert"></div>
+        <div class="alert-success text-center" id="card-success" role="alert"></div>
+    </div>
+    <hr>
+
+    <a id="pay-button" href="javascript:void(0)" class="btn btn-primary" onClick="val()">Charge Card</a>
+
+    <div id ="processing-payment">
+        <div class ="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading......</span>
+        </div>
+    </div>
+
+    <input type="hidden" name="payment_method" id="payment_method">
+    <input type="hidden" name="payment_intent" id="payment_intent">
+    <input type="hidden" name="payment_amount" id="payment_amount">
+    <input type="hidden" name="payment_currency" id="payment_currency">
+    
+</form>
+
+{{end}}
+
+{{define "js"}}
+<script>
+document.getElementById("charge_amount").addEventListener("change",function(event){
+    if(event.target.value !== ""){
+        document.getElementById("amount").value = parseInt((event.target.value * 100),10);
+    } else {
+        document.getElementById("amount").value = 0;
+    } 
+})
+</script>
+{{template "stripe-js" .}}
+{{end}}
+

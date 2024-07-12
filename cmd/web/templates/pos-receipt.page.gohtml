@@ -1,0 +1,20 @@
+{{template "base" . }}
+
+{{define "title"}}
+   Pos Payment Suceeded
+{{end}}
+
+{{define "content"}}
+    {{$txn := index .Data "txn"}}
+    <h2 class="mt-5">Payment Suceeded</h2>
+    <hr>
+    <p>Payment Intent: {{$txn.PaymentIntentID}}</p>
+    <p>Cardholder: {{$txn.FirstName}} {{$txn.LastName}}</p>
+    <p>Email: {{$txn.Email}}</p>
+    <p>Payment Amount: {{$txn.PaymentAmount}}</p>
+    <p>Payment Method: {{$txn.PaymentMethodID}}</p>
+    <p>Payment Currency: {{formatCurrency $txn.PaymentCurrency}}</p>
+    <p>Last Four: {{$txn.LastFour}}</p>
+    <p>Card Expiry: {{$txn.ExpiryMonth}/{{$txn.ExpiryYear}}</p>
+    <p>Bank Return Code: {{$txn.BankReturnCode}}</p>
+{{end}}
