@@ -6,7 +6,8 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/ichthoth/stripe-credit-terminal/internal/cards"
+	"github.com/stdthoth/stripe-app/internal/cards"
+	"github.com/stripe/stripe-go/v72"
 )
 
 type stripePayload struct {
@@ -14,8 +15,14 @@ type stripePayload struct {
 	Amount        string `json:"amount"`
 	PaymentMethod string `json:"payment_method"`
 	Email         string `json:"email"`
+	CardBrand     string `json:"card_brand"`
 	LastFour      string `json:"last_four"`
+	ExpiryMonth   string `json:"expiry_month"`
+	ExpiryYear    string `json:"expiry_year"`
 	Plan          string `json:"plan"`
+	ProductId     string `json:"product_id"`
+	FirstName     string `json:"first_name"`
+	LastName      string `json:"last_name"`
 }
 
 type response struct {
@@ -105,8 +112,34 @@ func (app *application) CreateCustomerAndSub(w http.ResponseWriter, r *http.Requ
 	}
 
 	app.infoLog.Println(data.Amount, data.Currency, data.Email, data.PaymentMethod, data.Plan)
+
+	card := cards.Card{
+		Currency: data.Currency,
+		Secret:   app.config.stripeInfo.secret,
+		Key:      app.config.stripeInfo.key,
+	}
+
 	okay := true
-	msg := ""
+	var subscription *stripe.Subscription
+
+	stripeCustomer, msg, err := card.CreateCustomer(data.PaymentMethod, data.Email)
+	if err != nil {
+		app.errorLog.Println(err)
+		okay = false
+	}
+
+	if okay {
+		subscription, err = card.SubscribeToPlan(stripeCustomer, data.Plan, data.Email, data.LastFour, "")
+		if err != nil {
+			app.errorLog.Println(err)
+			okay = false
+		}
+
+	}
+
+	app.infoLog.Println("subscription is", subscription.ID)
+
+	//msg = ""
 
 	resp := response{
 		OK:      okay,
