@@ -11,8 +11,8 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/ichthoth/stripe-credit-terminal/internal/models"
-	"github.com/ichthoth/stripe-credit-terminal/internal/store"
+	"github.com/stdthoth/stripe-app/internal/models"
+	"github.com/stdthoth/stripe-app/internal/store"
 )
 
 const version = "1.0.0"

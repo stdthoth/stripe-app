@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/ichthoth/stripe-credit-terminal/internal/cards"
-	"github.com/ichthoth/stripe-credit-terminal/internal/models"
+	"github.com/stdthoth/stripe-app/internal/cards"
+	"github.com/stdthoth/stripe-app/internal/models"
 )
 
 type TransactionData struct {

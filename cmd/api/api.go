@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/ichthoth/stripe-credit-terminal/internal/models"
+	"github.com/stdthoth/stripe-app/internal/models"
 )
 
 const version = "1.0.0"
